@@ -1,6 +1,8 @@
 "use client";
 
+import { Color } from "@tiptap/extension-color";
 import FontFamily from "@tiptap/extension-font-family";
+import Highlight from "@tiptap/extension-highlight";
 import Image from "@tiptap/extension-image";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
@@ -8,6 +10,7 @@ import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
+import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -52,7 +55,11 @@ const Editor = () => {
       },
     },
     extensions: [
+      Color,
       FontFamily,
+      Highlight.configure({
+        multicolor: true,
+      }),
       Image,
       ImageResize,
       StarterKit,
@@ -66,6 +73,9 @@ const Editor = () => {
         nested: true,
       }),
       TaskList,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
       TextStyle,
       Underline,
     ],

@@ -19,9 +19,12 @@ import {
 
 import { Separator } from "@/components/ui/separator";
 import { useEditorStore } from "@/store/use-editor-store";
-import { ToolbarButton } from "./toolbar-button";
 import { FontFamilyButton } from "./font-family-button";
 import { HeadingLevelButton } from "./heading-level-button";
+import { HighlightColorButton } from "./highlight-color-button";
+import { TextAlignButton } from "./text-align-button";
+import { TextColorButton } from "./text-color-button";
+import { ToolbarButton } from "./toolbar-button";
 
 const Toolbar = () => {
   const { editor } = useEditorStore();
@@ -111,11 +114,6 @@ const Toolbar = () => {
         onClick: () => editor?.chain().focus().toggleOrderedList().run(),
         isActive: editor?.isActive("orderedList"),
       },
-      {
-        label: "Clear formatting",
-        icon: RemoveFormattingIcon,
-        onClick: () => editor?.chain().focus().unsetAllMarks().run(),
-      },
     ],
   ];
 
@@ -126,11 +124,11 @@ const Toolbar = () => {
       ))}
 
       <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
-      
+
       <HeadingLevelButton />
 
       <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
-      
+
       <FontFamilyButton />
 
       <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
@@ -140,17 +138,33 @@ const Toolbar = () => {
         <ToolbarButton key={section.label} {...section} />
       ))}
 
+      <TextColorButton />
+
+      <HighlightColorButton />
+
       <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
 
       {sections[2].map((section) => (
         <ToolbarButton key={section.label} {...section} />
       ))}
 
+      {/* image */}
+
       <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
+
+      <TextAlignButton />
+
+      {/* line-height */}
 
       {sections[3].map((section) => (
         <ToolbarButton key={section.label} {...section} />
       ))}
+
+      <ToolbarButton
+        label="Clear formatting"
+        icon={RemoveFormattingIcon}
+        onClick={() => editor?.chain().focus().unsetAllMarks().run()}
+      />
     </div>
   );
 };

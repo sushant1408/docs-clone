@@ -19,7 +19,7 @@ const ToolbarButton = ({
   onClick,
 }: ToolbarButtonProps) => {
   return (
-    <TooltipWrapper label={label}>
+    <TooltipWrapper label={label} side="bottom">
       <button
         onClick={onClick}
         className={cn(

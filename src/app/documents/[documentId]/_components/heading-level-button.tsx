@@ -1,7 +1,7 @@
 "use client";
 
-import { ChevronDownIcon } from "lucide-react";
 import { type Level } from "@tiptap/extension-heading";
+import { ChevronDownIcon } from "lucide-react";
 
 import {
   DropdownMenu,
