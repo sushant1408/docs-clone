@@ -20,6 +20,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useEditorStore } from "@/store/use-editor-store";
 import { ToolbarButton } from "./toolbar-button";
+import { FontFamilyButton } from "./font-family-button";
+import { HeadingLevelButton } from "./heading-level-button";
 
 const Toolbar = () => {
   const { editor } = useEditorStore();
@@ -124,6 +126,15 @@ const Toolbar = () => {
       ))}
 
       <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
+      
+      <HeadingLevelButton />
+
+      <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
+      
+      <FontFamilyButton />
+
+      <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
+      {/* font-size */}
 
       {sections[1].map((section) => (
         <ToolbarButton key={section.label} {...section} />
