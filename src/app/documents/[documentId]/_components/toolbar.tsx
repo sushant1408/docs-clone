@@ -3,7 +3,6 @@
 import {
   BoldIcon,
   ItalicIcon,
-  Link2Icon,
   ListChecksIcon,
   ListIcon,
   ListOrderedIcon,
@@ -22,6 +21,8 @@ import { useEditorStore } from "@/store/use-editor-store";
 import { FontFamilyButton } from "./font-family-button";
 import { HeadingLevelButton } from "./heading-level-button";
 import { HighlightColorButton } from "./highlight-color-button";
+import { ImageButton } from "./image-button";
+import { LinkButton } from "./link-button";
 import { TextAlignButton } from "./text-align-button";
 import { TextColorButton } from "./text-color-button";
 import { ToolbarButton } from "./toolbar-button";
@@ -85,11 +86,6 @@ const Toolbar = () => {
     ],
     [
       {
-        label: "Link",
-        icon: Link2Icon,
-        onClick: () => {},
-      },
-      {
         label: "Comment",
         icon: MessageSquarePlusIcon,
         onClick: () => {},
@@ -144,11 +140,13 @@ const Toolbar = () => {
 
       <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
 
+      <LinkButton />
+
       {sections[2].map((section) => (
         <ToolbarButton key={section.label} {...section} />
       ))}
 
-      {/* image */}
+      <ImageButton />
 
       <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
 
