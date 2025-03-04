@@ -19,9 +19,11 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useEditorStore } from "@/store/use-editor-store";
 import { FontFamilyButton } from "./font-family-button";
+import { FontSizeButton } from "./font-size-button";
 import { HeadingLevelButton } from "./heading-level-button";
 import { HighlightColorButton } from "./highlight-color-button";
 import { ImageButton } from "./image-button";
+import { LineHeightButton } from "./line-height-button";
 import { LinkButton } from "./link-button";
 import { TextAlignButton } from "./text-align-button";
 import { TextColorButton } from "./text-color-button";
@@ -128,7 +130,10 @@ const Toolbar = () => {
       <FontFamilyButton />
 
       <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
-      {/* font-size */}
+
+      <FontSizeButton />
+
+      <Separator orientation="vertical" className="!h-6 bg-neutral-300" />
 
       {sections[1].map((section) => (
         <ToolbarButton key={section.label} {...section} />
@@ -152,7 +157,7 @@ const Toolbar = () => {
 
       <TextAlignButton />
 
-      {/* line-height */}
+      <LineHeightButton />
 
       {sections[3].map((section) => (
         <ToolbarButton key={section.label} {...section} />

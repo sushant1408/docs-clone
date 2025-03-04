@@ -18,6 +18,8 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import ImageResize from "tiptap-extension-resize-image";
 
+import { FontSizeExtention } from "@/extensions/font-size";
+import { LineHeightExtention } from "@/extensions/line-height";
 import { useEditorStore } from "@/store/use-editor-store";
 
 const Editor = () => {
@@ -58,11 +60,16 @@ const Editor = () => {
     extensions: [
       Color,
       FontFamily,
+      FontSizeExtention,
       Highlight.configure({
         multicolor: true,
       }),
       Image,
       ImageResize,
+      LineHeightExtention.configure({
+        types: ["heading", "paragraph"],
+        defaultLineHeight: "normal",
+      }),
       Link.configure({
         openOnClick: false,
         autolink: true,
