@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
 
 const fontSizes = [
   { label: "8", value: "8" },
@@ -79,12 +80,14 @@ const FontSizeButton = () => {
 
   return (
     <div className="flex items-center gap-x-0.5">
-      <button
-        onClick={decrement}
-        className="text-sm h-7 w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80 cursor-pointer"
-      >
-        <MinusIcon className="!size-4" />
-      </button>
+      <TooltipWrapper label="Decrease font size">
+        <button
+          onClick={decrement}
+          className="text-sm h-7 w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80 cursor-pointer"
+        >
+          <MinusIcon className="!size-4" />
+        </button>
+      </TooltipWrapper>
       {isEditing ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -120,12 +123,14 @@ const FontSizeButton = () => {
           {currentFontSize}
         </button>
       )}
-      <button
-        onClick={increment}
-        className="text-sm h-7 w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80 cursor-pointer"
-      >
-        <PlusIcon className="!size-4" />
-      </button>
+      <TooltipWrapper label="Increase font size">
+        <button
+          onClick={increment}
+          className="text-sm h-7 w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80 cursor-pointer"
+        >
+          <PlusIcon className="!size-4" />
+        </button>
+      </TooltipWrapper>
     </div>
   );
 };
