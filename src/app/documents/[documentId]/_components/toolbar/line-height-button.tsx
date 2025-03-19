@@ -3,11 +3,10 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { useEditorStore } from "@/store/use-editor-store";
-import { ListCollapseIcon } from "lucide-react";
+import { TbLineHeight } from "react-icons/tb";
 
 const lineHeights = [
   { label: "Default", value: "normal" },
@@ -25,7 +24,7 @@ const LineHeightButton = () => {
       <TooltipWrapper label="Line & Paragraph spacing">
         <DropdownMenuTrigger asChild>
           <button className="text-sm h-7 min-w-7 flex items-center justify-center rounded-sm hover:bg-neutral-200/80 cursor-pointer">
-            <ListCollapseIcon className="!size-4" />
+            <TbLineHeight className="!size-4" />
           </button>
         </DropdownMenuTrigger>
       </TooltipWrapper>
