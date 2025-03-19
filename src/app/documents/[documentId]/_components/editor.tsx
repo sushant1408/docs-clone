@@ -91,23 +91,6 @@ const Editor = () => {
       TextStyle,
       Underline,
     ],
-    content: `
-        <table>
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th colspan="3">Description</th>
-            </tr>
-            <tr>
-              <td>Cyndi Lauper</td>
-              <td>Singer</td>
-              <td>Songwriter</td>
-              <td>Actress</td>
-            </tr>
-          </tbody>
-        </table>
-        <img src="https://placehold.co/800x400/6A00F5/white" />
-      `,
   });
 
   return (

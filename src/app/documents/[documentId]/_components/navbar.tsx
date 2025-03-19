@@ -70,6 +70,54 @@ const Navbar = () => {
     );
   };
 
+  const onDownload = (blob: Blob, filename: string) => {
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+  };
+
+  const onDownloadJson = () => {
+    if (!editor) {
+      return;
+    }
+
+    const content = editor.getJSON();
+    const blob = new Blob([JSON.stringify(content)], {
+      type: "application/json",
+    });
+
+    onDownload(blob, `document.json`);
+  };
+
+  const onDownloadHtml = () => {
+    if (!editor) {
+      return;
+    }
+
+    const content = editor.getHTML();
+    const blob = new Blob([content], {
+      type: "text/html",
+    });
+
+    onDownload(blob, `document.html`);
+  };
+
+  const onDownloadText = () => {
+    if (!editor) {
+      return;
+    }
+
+    const content = editor.getText();
+    const blob = new Blob([content], {
+      type: "text/plain",
+    });
+
+    onDownload(blob, `document.text`);
+  };
+
   return (
     <nav className="flex items-center justify-between">
       <div className="flex gap-2 items-center">
@@ -84,7 +132,7 @@ const Navbar = () => {
                 <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
                   File
                 </MenubarTrigger>
-                <MenubarContent>
+                <MenubarContent className="print:hidden">
                   <MenubarSub>
                     <MenubarSubTrigger>
                       <SiGoogledocs className="size-4 mr-2 text-muted-foreground" />
@@ -108,10 +156,18 @@ const Navbar = () => {
                       Download
                     </MenubarSubTrigger>
                     <MenubarSubContent>
-                      <MenubarItem>JSON (.json)</MenubarItem>
-                      <MenubarItem>HTML (.html)</MenubarItem>
-                      <MenubarItem>PDF (.pdf)</MenubarItem>
-                      <MenubarItem>Text (.txt)</MenubarItem>
+                      <MenubarItem onClick={onDownloadJson}>
+                        JSON (.json)
+                      </MenubarItem>
+                      <MenubarItem onClick={onDownloadHtml}>
+                        HTML (.html)
+                      </MenubarItem>
+                      <MenubarItem onClick={() => window.print()}>
+                        PDF (.pdf)
+                      </MenubarItem>
+                      <MenubarItem onClick={onDownloadText}>
+                        Text (.txt)
+                      </MenubarItem>
                     </MenubarSubContent>
                   </MenubarSub>
                   <MenubarSeparator />
@@ -136,7 +192,7 @@ const Navbar = () => {
                 <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
                   Edit
                 </MenubarTrigger>
-                <MenubarContent>
+                <MenubarContent className="print:hidden">
                   <MenubarItem
                     onClick={() => editor?.chain().focus().undo().run()}
                   >
@@ -158,7 +214,7 @@ const Navbar = () => {
                 <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
                   Insert
                 </MenubarTrigger>
-                <MenubarContent>
+                <MenubarContent className="print:hidden">
                   <MenubarSub
                     onOpenChange={(open) => {
                       if (!open) {
@@ -226,7 +282,7 @@ const Navbar = () => {
                 <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
                   Format
                 </MenubarTrigger>
-                <MenubarContent>
+                <MenubarContent className="print:hidden">
                   <MenubarSub>
                     <MenubarSubTrigger>
                       <BoldIcon className="size-4 mr-2 text-muted-foreground" />
@@ -481,14 +537,14 @@ const Navbar = () => {
                 <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
                   Tools
                 </MenubarTrigger>
-                <MenubarContent></MenubarContent>
+                <MenubarContent className="print:hidden"></MenubarContent>
               </MenubarMenu>
 
               <MenubarMenu>
                 <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
                   Help
                 </MenubarTrigger>
-                <MenubarContent></MenubarContent>
+                <MenubarContent className="print:hidden"></MenubarContent>
               </MenubarMenu>
             </Menubar>
           </div>
