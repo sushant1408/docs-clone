@@ -44,7 +44,9 @@ import {
 import { useConfirm } from "@/hooks/use-confirm";
 import { useEditorStore } from "@/store/use-editor-store";
 import { api } from "../../../../../convex/_generated/api";
+import { Avatars } from "./avatars";
 import { DocumentInput } from "./document-input";
+import { Inbox } from "./inbox";
 
 const Navbar = () => {
   const { editor } = useEditorStore();
@@ -591,6 +593,8 @@ const Navbar = () => {
       </div>
 
       <div className="flex gap-3 items-center pl-6">
+        <Inbox />
+        <Avatars />
         <OrganizationSwitcher
           afterCreateOrganizationUrl="/"
           afterLeaveOrganizationUrl="/"
