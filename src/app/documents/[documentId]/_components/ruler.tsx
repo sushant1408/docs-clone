@@ -1,16 +1,30 @@
+import { useMutation, useStorage } from "@liveblocks/react";
 import { MouseEvent, useRef, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
-import { MIN_SPACE_BETWEEN_MARKERS, PAGE_WIDTH } from "@/lib/constants";
+import {
+  DEFAULT_LEFT_MARGIN,
+  DEFAULT_RIGHT_MARGIN,
+  MIN_SPACE_BETWEEN_MARKERS,
+  PAGE_WIDTH,
+} from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const markers = Array.from({ length: 83 }, (_, i) => i);
 
 const Ruler = () => {
-  const [leftMargin, setLeftMargin] = useState(56);
+  const leftMargin =
+    useStorage((root) => root.leftMargin) ?? DEFAULT_LEFT_MARGIN;
+  const setLeftMargin = useMutation(({ storage }, position) => {
+    storage.set("leftMargin", position);
+  }, []);
   const [isDraggingLeft, setIsDraggingLeft] = useState(false);
 
-  const [rightMargin, setRightMargin] = useState(56);
+  const rightMargin =
+    useStorage((root) => root.rightMargin) ?? DEFAULT_RIGHT_MARGIN;
+  const setRightMargin = useMutation(({ storage }, position) => {
+    storage.set("rightMargin", position);
+  }, []);
   const [isDraggingRight, setIsDraggingRight] = useState(false);
 
   const rulerRef = useRef<HTMLDivElement>(null);
@@ -79,10 +93,7 @@ const Ruler = () => {
       onMouseLeave={handleMouseUp}
       className="w-[816px] mx-auto h-6 border-b border-gray-300 flex items-end relative select-none print:hidden"
     >
-      <div
-        id="ruler-container"
-        className="w-full h-full relative"
-      >
+      <div id="ruler-container" className="w-full h-full relative">
         <Marker
           position={leftMargin}
           isLeft

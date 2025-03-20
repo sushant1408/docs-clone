@@ -1,5 +1,6 @@
 "use client";
 
+import { useStorage } from "@liveblocks/react";
 import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
 import { Color } from "@tiptap/extension-color";
 import FontFamily from "@tiptap/extension-font-family";
@@ -21,13 +22,17 @@ import ImageResize from "tiptap-extension-resize-image";
 
 import { FontSizeExtention } from "@/extensions/font-size";
 import { LineHeightExtention } from "@/extensions/line-height";
+import { DEFAULT_LEFT_MARGIN, DEFAULT_RIGHT_MARGIN } from "@/lib/constants";
 import { useEditorStore } from "@/store/use-editor-store";
-import { Ruler } from "./ruler";
 import { Threads } from "../threads";
+import { Ruler } from "./ruler";
 
 const Editor = () => {
   const { setEditor } = useEditorStore();
   const liveblocks = useLiveblocksExtension();
+
+  const leftMargin = useStorage((root) => root.leftMargin);
+  const rightMargin = useStorage((root) => root.rightMargin);
 
   const editor = useEditor({
     onCreate: ({ editor }) => {
@@ -57,7 +62,7 @@ const Editor = () => {
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        style: "padding-left: 56px; padding-right: 56px",
+        style: `padding-left: ${leftMargin ?? DEFAULT_LEFT_MARGIN}px; padding-right: ${rightMargin ?? DEFAULT_RIGHT_MARGIN}px`,
         class:
           "focus:outline-none print:border-0 bg-white border border-[#c7c7c7] flex flex-col min-h-[1054px] w-[816px] pt-10 pr-14 pb-10 cursor-text",
       },

@@ -10,8 +10,9 @@ import { ReactNode, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { FullscreenLoader } from "@/components/fullscreen-loader";
-import { getDocuments, getUsers } from "./action";
+import { DEFAULT_LEFT_MARGIN, DEFAULT_RIGHT_MARGIN } from "@/lib/constants";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { getDocuments, getUsers } from "./action";
 
 type User = {
   id: string;
@@ -76,7 +77,13 @@ const Room = ({ children }: { children: ReactNode }) => {
         return documents.map((document) => ({ ...document }));
       }}
     >
-      <RoomProvider id={params.documentId}>
+      <RoomProvider
+        id={params.documentId}
+        initialStorage={{
+          leftMargin: DEFAULT_LEFT_MARGIN,
+          rightMargin: DEFAULT_RIGHT_MARGIN,
+        }}
+      >
         <ClientSideSuspense
           fallback={<FullscreenLoader label="Document loading..." />}
         >
