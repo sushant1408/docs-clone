@@ -1,6 +1,7 @@
 import { Editor } from "./_components/editor";
 import { Navbar } from "./_components/navbar";
 import { Toolbar } from "./_components/toolbar";
+import { Room } from "./room";
 
 interface DocumentIdPageProps {
   params: Promise<{ documentId: string }>;
@@ -14,7 +15,9 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
         <Toolbar />
       </div>
       <div className="pt-[114px] print:pt-0">
-        <Editor />
+        <Room>
+          <Editor />
+        </Room>
       </div>
     </div>
   );
