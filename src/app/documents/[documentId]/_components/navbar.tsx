@@ -1,5 +1,6 @@
 "use client";
 
+import { useMutation } from "convex/react";
 import {
   AlignCenterIcon,
   AlignJustifyIcon,
@@ -39,16 +40,38 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import { useConfirm } from "@/hooks/use-confirm";
 import { useEditorStore } from "@/store/use-editor-store";
+import { api } from "../../../../../convex/_generated/api";
 import { DocumentInput } from "./document-input";
+import { RenameDialog } from "@/components/rename-dialog";
 
 const Navbar = () => {
   const { editor } = useEditorStore();
 
+  const [isRemoving, setIsRemoving] = useState(false);
   const [columns, setColumns] = useState(11);
   const [rows, setRows] = useState(5);
   const [hoveredCell, setHoveredCell] = useState({ row: 0, col: 0 });
   const maxSize = 20;
+  const [ConfirmationDialog, confirm] = useConfirm({
+    message:
+      "This actin cannot be undone. This will permanently delete your document.",
+    title: "Are you sure?",
+  });
+
+  const remove = useMutation(api.documents.removeById);
+
+  const onRemove = async () => {
+    const ok = await confirm();
+
+    if (!ok) {
+      return;
+    }
+
+    setIsRemoving(true);
+    // remove({ id: documentId }).finally(() => setIsRemoving(false));
+  };
 
   const handleMouseEnter = (rowIndex: number, colIndex: number) => {
     setHoveredCell({ row: rowIndex, col: colIndex });
@@ -171,14 +194,30 @@ const Navbar = () => {
                     </MenubarSubContent>
                   </MenubarSub>
                   <MenubarSeparator />
-                  <MenubarItem>
-                    <PencilIcon />
-                    Rename
-                  </MenubarItem>
-                  <MenubarItem>
-                    <Trash2Icon />
-                    Move to trash
-                  </MenubarItem>
+                  {/* <RenameDialog
+                    documentId={documentId}
+                    initialTitle={documentTitle}
+                  > */}
+                    <MenubarItem
+                      onSelect={(e) => e.preventDefault()}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <PencilIcon />
+                      Rename
+                    </MenubarItem>
+                  {/* </RenameDialog> */}
+                  <ConfirmationDialog>
+                    <MenubarItem
+                      onSelect={(e) => e.preventDefault()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onRemove();
+                      }}
+                    >
+                      <Trash2Icon />
+                      Move to trash
+                    </MenubarItem>
+                  </ConfirmationDialog>
                   <MenubarSeparator />
                   <MenubarItem onClick={() => window.print()}>
                     <PrinterIcon />

@@ -1,5 +1,9 @@
 "use client";
 
+import { useMutation } from "convex/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 import {
   Carousel,
   CarouselContent,
@@ -7,8 +11,21 @@ import {
 } from "@/components/ui/carousel";
 import TEMPLATES from "@/lib/templates";
 import { cn } from "@/lib/utils";
+import { api } from "../../../../convex/_generated/api";
 
 const TemplatesGallery = () => {
+  const router = useRouter();
+
+  const create = useMutation(api.documents.create);
+  const [isCreating, setIsCreating] = useState(false);
+
+  const onTemplateClick = (title: string, initialContent: string) => {
+    setIsCreating(true);
+    create({ initialContent, title })
+      .then((documentId) => router.push(`/documents/${documentId}`))
+      .finally(() => setIsCreating(false));
+  };
+
   return (
     <div className="bg-[#f1f3f4]">
       <div className="max-w-screen-xl mx-auto px-16 py-6 flex flex-col gap-y-4">
@@ -28,12 +45,14 @@ const TemplatesGallery = () => {
                 <div
                   className={cn(
                     "aspect-[3/4] flex flex-col gap-y-2.5",
-                    false && "pointer-events-none opacity-50"
+                    isCreating && "pointer-events-none opacity-50"
                   )}
                 >
                   <button
-                    disabled={false}
-                    onClick={() => {}}
+                    disabled={isCreating}
+                    onClick={() =>
+                      onTemplateClick(template.label, template.initialContent)
+                    }
                     className="bg-cover bg-center bg-no-repeat size-full hover:border-blue-500 rounded-sm border hover:bg-blue-50 transition flex flex-col items-center justify-center gap-y-4 bg-white cursor-pointer"
                     style={{
                       backgroundImage: `url(${template.imageUrl})`,

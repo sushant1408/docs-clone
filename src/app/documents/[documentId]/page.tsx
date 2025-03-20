@@ -14,7 +14,7 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
         <Toolbar />
       </div>
       <div className="pt-[114px] print:pt-0">
-      <Editor />
+        <Editor />
       </div>
     </div>
   );
