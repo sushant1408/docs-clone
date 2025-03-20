@@ -1,5 +1,6 @@
 "use client";
 
+import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
 import {
   AlignCenterIcon,
@@ -44,7 +45,6 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { useEditorStore } from "@/store/use-editor-store";
 import { api } from "../../../../../convex/_generated/api";
 import { DocumentInput } from "./document-input";
-import { RenameDialog } from "@/components/rename-dialog";
 
 const Navbar = () => {
   const { editor } = useEditorStore();
@@ -56,7 +56,7 @@ const Navbar = () => {
   const maxSize = 20;
   const [ConfirmationDialog, confirm] = useConfirm({
     message:
-      "This actin cannot be undone. This will permanently delete your document.",
+      "This action cannot be undone. This will permanently delete your document.",
     title: "Are you sure?",
   });
 
@@ -70,7 +70,7 @@ const Navbar = () => {
     }
 
     setIsRemoving(true);
-    // remove({ id: documentId }).finally(() => setIsRemoving(false));
+    // remove({ id: documentId }).then(() => toast.success("Document deleted")).catch(() => toast.error("Something went wrong")).finally(() => setIsRemoving(false));
   };
 
   const handleMouseEnter = (rowIndex: number, colIndex: number) => {
@@ -198,13 +198,13 @@ const Navbar = () => {
                     documentId={documentId}
                     initialTitle={documentTitle}
                   > */}
-                    <MenubarItem
-                      onSelect={(e) => e.preventDefault()}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <PencilIcon />
-                      Rename
-                    </MenubarItem>
+                  <MenubarItem
+                    onSelect={(e) => e.preventDefault()}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <PencilIcon />
+                    Rename
+                  </MenubarItem>
                   {/* </RenameDialog> */}
                   <ConfirmationDialog>
                     <MenubarItem
@@ -588,6 +588,16 @@ const Navbar = () => {
             </Menubar>
           </div>
         </div>
+      </div>
+
+      <div className="flex gap-3 items-center pl-6">
+        <OrganizationSwitcher
+          afterCreateOrganizationUrl="/"
+          afterLeaveOrganizationUrl="/"
+          afterSelectOrganizationUrl="/"
+          afterSelectPersonalUrl="/"
+        />
+        <UserButton />
       </div>
     </nav>
   );

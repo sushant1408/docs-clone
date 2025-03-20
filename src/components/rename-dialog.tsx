@@ -1,5 +1,6 @@
 import { useMutation } from "convex/react";
 import { FormEvent, ReactNode, useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -36,7 +37,11 @@ const RenameDialog = ({
 
     setIsUpdating(true);
     update({ id: documentId, title: value.trim() || "Untitled document" })
-      .then(() => setIsOpen(false))
+      .then(() => {
+        setIsOpen(false);
+        toast.success("Document renamed");
+      })
+      .catch(() => toast.error("Something went wrong"))
       .finally(() => setIsUpdating(false));
   };
 

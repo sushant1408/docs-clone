@@ -2,7 +2,9 @@ import { useMutation } from "convex/react";
 import { ExternalLinkIcon, MoreVerticalIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { MdTextFields } from "react-icons/md";
+import { toast } from "sonner";
 
+import { RenameDialog } from "@/components/rename-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,7 +15,6 @@ import {
 import { useConfirm } from "@/hooks/use-confirm";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
-import { RenameDialog } from "@/components/rename-dialog";
 
 interface DocumentMenuProps {
   documentId: Id<"documents">;
@@ -28,7 +29,7 @@ const DocumentMenu = ({
 }: DocumentMenuProps) => {
   const [ConfirmationDialog, confirm] = useConfirm({
     message:
-      "This actin cannot be undone. This will permanently delete your document.",
+      "This action cannot be undone. This will permanently delete your document.",
     title: "Are you sure?",
   });
 
@@ -43,7 +44,10 @@ const DocumentMenu = ({
     }
 
     setIsRemoving(true);
-    remove({ id: documentId }).finally(() => setIsRemoving(false));
+    remove({ id: documentId })
+      .then(() => toast.success("Document deleted"))
+      .catch(() => toast.error("Something went wrong"))
+      .finally(() => setIsRemoving(false));
   };
 
   return (

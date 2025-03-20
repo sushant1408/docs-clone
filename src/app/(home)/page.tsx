@@ -2,16 +2,19 @@
 
 import { usePaginatedQuery } from "convex/react";
 
+import { useSearchParams } from "@/hooks/use-search-params";
 import { DEFAULT_INITIAL_NUM_ITEMS } from "@/lib/constants";
 import { api } from "../../../convex/_generated/api";
+import { DocumentsView } from "./_components/documents-view";
 import { Navbar } from "./_components/navbar";
 import { TemplatesGallery } from "./_components/templates-gallery";
-import { DocumentsView } from "./_components/documents-view";
 
 export default function Home() {
+  const [search] = useSearchParams("search");
+
   const { results, status, loadMore } = usePaginatedQuery(
     api.documents.get,
-    {},
+    { search },
     { initialNumItems: DEFAULT_INITIAL_NUM_ITEMS }
   );
 
