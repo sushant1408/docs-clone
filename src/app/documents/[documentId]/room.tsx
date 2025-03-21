@@ -85,7 +85,7 @@ const Room = ({ children }: { children: ReactNode }) => {
         }}
       >
         <ClientSideSuspense
-          fallback={<FullscreenLoader label="Document loading..." />}
+          fallback={<FullscreenLoader label="Room loading..." />}
         >
           {children}
         </ClientSideSuspense>

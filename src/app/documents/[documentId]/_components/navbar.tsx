@@ -28,7 +28,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { SiGoogledocs } from "react-icons/si";
 import { TbLineHeight } from "react-icons/tb";
+import { toast } from "sonner";
 
+import { RenameDialog } from "@/components/rename-dialog";
 import {
   Menubar,
   MenubarContent,
@@ -44,12 +46,19 @@ import {
 import { useConfirm } from "@/hooks/use-confirm";
 import { useEditorStore } from "@/store/use-editor-store";
 import { api } from "../../../../../convex/_generated/api";
+import { Doc } from "../../../../../convex/_generated/dataModel";
 import { Avatars } from "./avatars";
 import { DocumentInput } from "./document-input";
 import { Inbox } from "./inbox";
+import { useRouter } from "next/navigation";
 
-const Navbar = () => {
+interface NavbarProps {
+  data: Doc<"documents">;
+}
+
+const Navbar = ({ data }: NavbarProps) => {
   const { editor } = useEditorStore();
+  const router = useRouter();
 
   const [isRemoving, setIsRemoving] = useState(false);
   const [columns, setColumns] = useState(11);
@@ -72,7 +81,13 @@ const Navbar = () => {
     }
 
     setIsRemoving(true);
-    // remove({ id: documentId }).then(() => toast.success("Document deleted")).catch(() => toast.error("Something went wrong")).finally(() => setIsRemoving(false));
+    remove({ id: data._id })
+      .then(() => {
+        toast.success("Document deleted");
+        router.replace("/");
+      })
+      .catch(() => toast.error("Something went wrong"))
+      .finally(() => setIsRemoving(false));
   };
 
   const handleMouseEnter = (rowIndex: number, colIndex: number) => {
@@ -114,7 +129,7 @@ const Navbar = () => {
       type: "application/json",
     });
 
-    onDownload(blob, `document.json`);
+    onDownload(blob, `${data.title}.json`);
   };
 
   const onDownloadHtml = () => {
@@ -127,7 +142,7 @@ const Navbar = () => {
       type: "text/html",
     });
 
-    onDownload(blob, `document.html`);
+    onDownload(blob, `${data.title}.html`);
   };
 
   const onDownloadText = () => {
@@ -140,7 +155,7 @@ const Navbar = () => {
       type: "text/plain",
     });
 
-    onDownload(blob, `document.text`);
+    onDownload(blob, `${data.title}.text`);
   };
 
   return (
@@ -150,7 +165,7 @@ const Navbar = () => {
           <Image src="/logo.svg" alt="logo" height={36} width={36} />
         </Link>
         <div className="flex flex-col">
-          <DocumentInput />
+          <DocumentInput documentId={data._id} initialTitle={data.title} />
           <div className="flex">
             <Menubar className="border-none bg-transparent shadow-none h-auto p-0">
               <MenubarMenu>
@@ -196,18 +211,15 @@ const Navbar = () => {
                     </MenubarSubContent>
                   </MenubarSub>
                   <MenubarSeparator />
-                  {/* <RenameDialog
-                    documentId={documentId}
-                    initialTitle={documentTitle}
-                  > */}
-                  <MenubarItem
-                    onSelect={(e) => e.preventDefault()}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <PencilIcon />
-                    Rename
-                  </MenubarItem>
-                  {/* </RenameDialog> */}
+                  <RenameDialog documentId={data._id} initialTitle={data.title}>
+                    <MenubarItem
+                      onSelect={(e) => e.preventDefault()}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <PencilIcon />
+                      Rename
+                    </MenubarItem>
+                  </RenameDialog>
                   <ConfirmationDialog>
                     <MenubarItem
                       onSelect={(e) => e.preventDefault()}
