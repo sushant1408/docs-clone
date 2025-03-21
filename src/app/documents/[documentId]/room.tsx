@@ -18,6 +18,7 @@ type User = {
   id: string;
   name: string;
   avatar: string;
+  color: string;
 };
 
 const Room = ({ children }: { children: ReactNode }) => {

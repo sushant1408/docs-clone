@@ -2,6 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { Liveblocks } from "@liveblocks/node";
 import { ConvexHttpClient } from "convex/browser";
 
+import { getColorFromName } from "@/lib/utils";
 import { api } from "../../../../convex/_generated/api";
 
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
@@ -39,12 +40,7 @@ export async function POST(req: Request) {
 
   const name =
     user.firstName || user.primaryEmailAddress?.emailAddress || "Anonymous";
-  const nameToNumber = name
-    .split("")
-    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-
-  const hue = Math.abs(nameToNumber) % 360;
-  const color = `hsl(${hue}, 80%, 60%)`;
+  const color = getColorFromName(name);
 
   const userInfo = {
     name,

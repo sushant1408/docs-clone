@@ -3,8 +3,9 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { ConvexHttpClient } from "convex/browser";
 
-import { Id } from "../../../../convex/_generated/dataModel";
+import { getColorFromName } from "@/lib/utils";
 import { api } from "../../../../convex/_generated/api";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
@@ -21,6 +22,9 @@ async function getUsers() {
     name:
       user.fullName || user.primaryEmailAddress?.emailAddress || "Anonymous",
     avatar: user.imageUrl,
+    color: getColorFromName(
+      user.fullName || user.primaryEmailAddress?.emailAddress || "Anonymous"
+    ),
   }));
 
   return users;
@@ -30,4 +34,5 @@ async function getDocuments(ids: Id<"documents">[]) {
   return await convex.query(api.documents.getByIds, { ids });
 }
 
-export { getUsers, getDocuments };
+export { getDocuments, getUsers };
+
