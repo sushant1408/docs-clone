@@ -33,7 +33,7 @@ const SearchInput = () => {
     <div className="flex-1 flex items-center justify-center">
       <form onSubmit={handleSubmit} className="relative max-w-[720px] w-full">
         <Input
-          placeholder="search"
+          placeholder="Search"
           value={value}
           onChange={handleChange}
           ref={inputRef}

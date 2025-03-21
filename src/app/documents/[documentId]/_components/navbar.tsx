@@ -9,7 +9,9 @@ import {
   AlignRightIcon,
   BoldIcon,
   DownloadIcon,
+  ImageIcon,
   ItalicIcon,
+  Link2Icon,
   ListChecksIcon,
   ListIcon,
   ListOrderedIcon,
@@ -22,6 +24,7 @@ import {
   Trash2Icon,
   UnderlineIcon,
   Undo2Icon,
+  UploadIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -51,6 +54,7 @@ import { Avatars } from "./avatars";
 import { DocumentInput } from "./document-input";
 import { Inbox } from "./inbox";
 import { useRouter } from "next/navigation";
+import { InsertImageDialog } from "@/components/insert-image-dialog";
 
 interface NavbarProps {
   data: Doc<"documents">;
@@ -61,6 +65,7 @@ const Navbar = ({ data }: NavbarProps) => {
   const router = useRouter();
 
   const [isRemoving, setIsRemoving] = useState(false);
+  const [isInsertImageDialogOpen, setIsInsertImageDialogOpen] = useState(false);
   const [columns, setColumns] = useState(11);
   const [rows, setRows] = useState(5);
   const [hoveredCell, setHoveredCell] = useState({ row: 0, col: 0 });
@@ -156,6 +161,32 @@ const Navbar = ({ data }: NavbarProps) => {
     });
 
     onDownload(blob, `${data.title}.text`);
+  };
+
+  const onSetImageUrl = (href: string) => {
+    editor?.chain().focus().setImage({ src: href }).run();
+  };
+
+  const onUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+
+      if (file) {
+        const imageUrl = URL.createObjectURL(file);
+        onSetImageUrl(imageUrl);
+      }
+    };
+
+    input.click();
+  };
+
+  const handleImageUrlSubmit = (imageUrl: string) => {
+    onSetImageUrl(imageUrl);
+    setIsInsertImageDialogOpen(false);
   };
 
   return (
@@ -268,6 +299,24 @@ const Navbar = ({ data }: NavbarProps) => {
                   Insert
                 </MenubarTrigger>
                 <MenubarContent className="print:hidden">
+                  <MenubarSub>
+                    <MenubarSubTrigger>
+                      <ImageIcon className="size-4 mr-2 text-muted-foreground" />
+                      Image
+                    </MenubarSubTrigger>
+                    <MenubarSubContent>
+                      <MenubarItem onClick={onUpload}>
+                        <UploadIcon />
+                        Upload from computer
+                      </MenubarItem>
+                      <MenubarItem
+                        onClick={() => setIsInsertImageDialogOpen(true)}
+                      >
+                        <Link2Icon />
+                        By URL
+                      </MenubarItem>
+                    </MenubarSubContent>
+                  </MenubarSub>
                   <MenubarSub
                     onOpenChange={(open) => {
                       if (!open) {
@@ -615,6 +664,12 @@ const Navbar = ({ data }: NavbarProps) => {
         />
         <UserButton />
       </div>
+
+      <InsertImageDialog
+        open={isInsertImageDialogOpen}
+        onClose={setIsInsertImageDialogOpen}
+        onImageUrlSubmit={handleImageUrlSubmit}
+      />
     </nav>
   );
 };
