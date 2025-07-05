@@ -28,9 +28,9 @@ const HeadingLevelButton = () => {
       if (editor?.isActive("heading", { level })) {
         return `Heading ${level}`;
       }
-
-      return "Normal text";
     }
+    
+    return "Normal text";
   };
 
   return (
